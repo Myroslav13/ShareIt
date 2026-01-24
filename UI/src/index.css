@@ -17,7 +17,7 @@ body {
 }
 
 .enter-btn {
-   @apply text-sm text-white bg-[#00C9A7] w-[100%] h-8 rounded-2xl shadow mt-5 cursor-pointer hover:bg-[#00A88D] lg:text-base lg:h-10;
+   @apply text-sm text-white bg-[#00C9A7] w-[100%] h-8 rounded-2xl font-bold shadow mt-5 cursor-pointer hover:bg-[#00A88D] lg:text-base lg:h-10;
 }
 
 .enter-section {
