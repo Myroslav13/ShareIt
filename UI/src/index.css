@@ -1,68 +1,33 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import "tailwindcss";
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+html, body, #root {
+	height: 100%;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+	background-color: #ecf0f1;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.input {
+   @apply rounded-2xl h-8 border-1 border-gray-300 bg-gray-100 p-3 text-xs lg:text-base lg:h-10 md:text-[13px] md:h-9;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.enter-navigation-div {
+   @apply border-b-2 w-[50%] flex justify-center hover:text-black text-sm lg:text-lg cursor-pointer;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.enter-btn {
+   @apply text-sm text-white bg-[#00C9A7] w-[100%] h-8 rounded-2xl shadow mt-5 cursor-pointer hover:bg-[#00A88D] lg:text-base lg:h-10;
+}
+
+.enter-section {
+   @apply mt-5 flex flex-col items-center;
+}
+
+.enter-form {
+   @apply flex flex-col items-center w-[85%];
+}
+
+.form-inputs {
+   @apply flex flex-col gap-3 lg:gap-5 w-[100%];
 }
