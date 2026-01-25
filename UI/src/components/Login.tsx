@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { FaGoogle, FaFacebookF } from 'react-icons/fa'
+import { FaGoogle, FaFacebookF } from 'react-icons/fa';
+import type { RegistrationLoginProps } from "./interfaces.ts";
 
-function Login() {
+function Login({setShowModal, setModalData}: RegistrationLoginProps) {
    const [enterData, setEnterData] = useState({
       email: "",
       password: ""
@@ -18,6 +19,22 @@ function Login() {
 
    function handleSubmit(e: any) {
       e.preventDefault();
+
+      if (enterData.email === "" || enterData.password === "") {
+         setShowModal(true);
+         setModalData({
+            title: "Warning!",
+            text: "At least one of the required fields is blank!",
+            isOk: false
+         });
+      } else {
+         setShowModal(true);
+         setModalData({
+            title: "Success!",
+            text: "You successfully logged in.",
+            isOk: true
+         });
+      }
    }
  
    return (
@@ -36,11 +53,11 @@ function Login() {
 
          <div className="flex justify-center gap-2 mt-1">
             <div>
-               <FaGoogle className="w-5 h-5 cursor-pointer" />
+               <FaGoogle className="alternative-enter-img" />
             </div>
 
             <div>
-               <FaFacebookF className="w-5 h-5 cursor-pointer" />
+               <FaFacebookF className="alternative-enter-img" />
             </div>
          </div>
       </div>

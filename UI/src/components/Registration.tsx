@@ -1,14 +1,8 @@
 import { useState } from "react";
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
+import type { RegistrationLoginProps } from "./interfaces.ts";
 
-type ModalData = { title: string; text: string; isOk: boolean };
-
-interface RegistrationProps {
-   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-   setModalData: React.Dispatch<React.SetStateAction<ModalData>>;
-}
-
-function Registration({setShowModal, setModalData}: RegistrationProps) {
+function Registration({setShowModal, setModalData}: RegistrationLoginProps) {
    const [enterData, setEnterData] = useState({
       email: "",
       password: ""

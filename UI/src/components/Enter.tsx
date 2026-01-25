@@ -26,7 +26,7 @@ function Enter() {
                   <h2 className="pb-2">Registration</h2>
                </div>
             </div>
-            {enterMode === 0 ? <Login/> : <Registration setShowModal={setShowModal} setModalData={setModalData} />}
+            {enterMode === 0 ? <Login setShowModal={setShowModal} setModalData={setModalData} /> : <Registration setShowModal={setShowModal} setModalData={setModalData} />}
          </div>
 
          {showModal && <div className="fixed inset-0 bg-black/50 z-40" />}
