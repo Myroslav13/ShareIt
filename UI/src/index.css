@@ -31,3 +31,11 @@ body {
 .form-inputs {
    @apply flex flex-col gap-3 lg:gap-5 w-[100%];
 }
+
+.modal-btn {
+   @apply w-[100%] h-10 rounded-2xl font-bold mt-5 cursor-pointer;
+}
+
+.modal-img {
+   @apply text-5xl;
+}
