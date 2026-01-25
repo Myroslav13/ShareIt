@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import type { RegistrationLoginProps } from "./interfaces.ts";
 import axios from "axios";
@@ -8,6 +9,19 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
       email: "",
       password: ""
    });
+   
+   const navigate = useNavigate();
+
+   async function fetchMe() {
+      const response = await axios.get("http://localhost:3000/me", { withCredentials: true });
+      if (response.status) {
+         navigate("/main");
+      }
+   }
+   
+   useEffect(() => {
+      fetchMe();
+   }, []);
 
    function handleChange(e: any) {
       const { name, value } = e.target;
@@ -26,7 +40,8 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
          setModalData({
             title: "Warning!",
             text: "At least one of the required fields is blank!",
-            isOk: false
+            isOk: false,
+            navigateTo: "/"
          });
       } else {
          try{
@@ -41,7 +56,8 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
             setModalData({
                title: "Success!",
                text: msg,
-               isOk: true
+               isOk: true,
+               navigateTo: "/main"
             });
          } catch (err: any) {
             const errMsg = err.response?.data?.message;
@@ -49,7 +65,8 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
             setModalData({
                title: "Warning!",
                text: errMsg,
-               isOk: false
+               isOk: false,
+               navigateTo: "/"
             });
          }
       }
@@ -69,7 +86,7 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
 
          <p className="text-center text-xs lg:text-sm mt-3">Or login via</p>
 
-         <div className="flex justify-center gap-2 mt-1">
+         <div className="alternative-enter">
             <div>
                <FaGoogle className="alternative-enter-img" />
             </div>

@@ -10,13 +10,14 @@ function Enter() {
    const [modalData, setModalData] = useState({
       title: "",
       text: "",
-      isOk: true
+      isOk: true,
+      navigateTo: "/"
    });
 
    return (
       <div className="flex flex-col md:flex-row items-center justify-around min-h-screen">
-         <img src="src/assets/share-it.png" title="ShareIt" alt="share-it" className="w-[55%] sm:w-[48%] md:w-[40%] 2xl:w-[35%]"/>
-         <div className="shadow-md rounded-lg w-[55%] sm:w-[48%] md:w-[40%] 2xl:w-[35%] p-6 bg-white">
+         <img src="src/assets/share-it.png" title="ShareIt" alt="share-it" className="w-[50%] sm:w-[40%] md:w-[45%] xl:w-[40%] 2xl:w-[35%]"/>
+         <div className="shadow-md rounded-lg w-[50%] sm:w-[42%] md:w-[40%] 2xl:w-[35%] p-6 bg-white">
             <div className="flex">
                <div className={`${enterMode === 0 ? "border-[#00C9A7]" : "border-gray-200 text-gray-400"} enter-navigation-div`} onClick={() => setEnterMode(0)}>
                   <h2 className="pb-2">Login</h2>
@@ -31,7 +32,7 @@ function Enter() {
 
          {showModal && <div className="fixed inset-0 bg-black/50 z-40" />}
          {showModal && 
-            <ShortInfo title={modalData.title} text={modalData.text} isOk={modalData.isOk} setShowModal={setShowModal}/>
+            <ShortInfo title={modalData.title} text={modalData.text} isOk={modalData.isOk} navigateTo={modalData.navigateTo} setShowModal={setShowModal}/>
          }
       </div>
    );

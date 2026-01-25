@@ -43,3 +43,7 @@ body {
 .alternative-enter-img {
    @apply w-5 h-5 cursor-pointer;
 }
+
+.alternative-enter {
+   @apply flex justify-center gap-2 mt-1;
+}

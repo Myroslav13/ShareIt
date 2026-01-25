@@ -55,7 +55,11 @@ passport.use("local", new LocalStrategy(
          }
 
          const user = response.rows[0];
-         const passwordHashed = user.password;
+         const passwordHashed = user.password_hash || user.password;
+
+         if (!passwordHashed) {
+            return done(null, false);
+         }
 
          bcrypt.compare(password, passwordHashed, (err, result) => {
             if (err) {
@@ -92,6 +96,49 @@ app.post("/login", (req, res, next) => {
          return res.status(200).json({message: "Successfully logged in", user: user});
       });
    })(req, res, next);
+});
+
+app.post("/register", async (req, res) => {
+   const { firstName, lastName, email, password } = req.body;
+
+   try {
+      const hash = await bcrypt.hash(password, saltRounds);
+
+      const response = await db.query(
+         "INSERT INTO users (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *",
+         [firstName, lastName, email, hash]
+      );
+
+      const user = response.rows[0];
+
+      if (response.rowCount < 1) {
+         return res.status(400).json({ message: "Something went wrong" });
+      }
+
+      req.login(user, (err) => {
+         if (err) {
+            return res.status(400).json({ message: "Something went wrong" });
+         }
+
+         return res.status(200).json({ message: "Successfully registered", user });
+      });
+   } catch (err) {
+      const message = err?.detail || err?.message;
+
+      if (err && err.code === "23505") {
+         return res.status(409).json({ message: "Email already exists" });
+      }
+
+      return res.status(400).json({ message });
+   }
+});
+
+app.get("/me", (req, res) => {
+   if(req.isAuthenticated()) {
+      return res.status(200).json({ user: req.user });
+   } else {
+      return res.status(400).json({ message: "You are not authenticated" });
+   }
 });
 
 passport.serializeUser((user, done) => {

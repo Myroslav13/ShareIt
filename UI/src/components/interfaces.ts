@@ -1,7 +1,8 @@
 export type ModalData = { 
    title: string; 
    text: string; 
-   isOk: boolean 
+   isOk: boolean,
+   navigateTo: string
 };
 
 export interface RegistrationLoginProps {
