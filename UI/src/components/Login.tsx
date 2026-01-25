@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import type { RegistrationLoginProps } from "./interfaces.ts";
+import axios from "axios";
 
 function Login({setShowModal, setModalData}: RegistrationLoginProps) {
    const [enterData, setEnterData] = useState({
@@ -17,7 +18,7 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
       }));
    }
 
-   function handleSubmit(e: any) {
+   async function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
 
       if (enterData.email === "" || enterData.password === "") {
@@ -28,12 +29,29 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
             isOk: false
          });
       } else {
-         setShowModal(true);
-         setModalData({
-            title: "Success!",
-            text: "You successfully logged in.",
-            isOk: true
-         });
+         try{
+            const response = await axios.post(
+               "http://localhost:3000/login",
+               { email: enterData.email, password: enterData.password },
+               { withCredentials: true }
+            );
+
+            const msg = response.data?.message;
+            setShowModal(true);
+            setModalData({
+               title: "Success!",
+               text: msg,
+               isOk: true
+            });
+         } catch (err: any) {
+            const errMsg = err.response?.data?.message;
+            setShowModal(true);
+            setModalData({
+               title: "Warning!",
+               text: errMsg,
+               isOk: false
+            });
+         }
       }
    }
  
