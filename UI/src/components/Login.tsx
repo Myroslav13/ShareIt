@@ -4,7 +4,7 @@ import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import type { RegistrationLoginProps } from "./interfaces.ts";
 import axios from "axios";
 
-function Login({setShowModal, setModalData}: RegistrationLoginProps) {
+function Login({ showModal }: RegistrationLoginProps) {
    const [enterData, setEnterData] = useState({
       email: "",
       password: ""
@@ -13,9 +13,13 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
    const navigate = useNavigate();
 
    async function fetchMe() {
-      const response = await axios.get("http://localhost:3000/me", { withCredentials: true });
-      if (response.status) {
-         navigate("/main");
+      try {
+         const response = await axios.get("http://localhost:3000/me", { withCredentials: true });
+         if (response.status === 200 && response.data?.user) {
+            navigate("/main");
+         }
+      } catch (err: any) {
+         return;
       }
    }
    
@@ -36,13 +40,7 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
       e.preventDefault();
 
       if (enterData.email === "" || enterData.password === "") {
-         setShowModal(true);
-         setModalData({
-            title: "Warning!",
-            text: "At least one of the required fields is blank!",
-            isOk: false,
-            navigateTo: "/"
-         });
+         showModal("Warning!", "At least one of the required fields is blank!", false, "/");
       } else {
          try{
             const response = await axios.post(
@@ -52,22 +50,20 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
             );
 
             const msg = response.data?.message;
-            setShowModal(true);
-            setModalData({
-               title: "Success!",
-               text: msg,
-               isOk: true,
-               navigateTo: "/main"
-            });
+            showModal("Success!", msg, true, "/main");
          } catch (err: any) {
-            const errMsg = err.response?.data?.message;
-            setShowModal(true);
-            setModalData({
-               title: "Warning!",
-               text: errMsg,
-               isOk: false,
-               navigateTo: "/"
-            });
+            const status = err.response?.status;
+            const msg = err.response?.data?.message || err.message || 'Network error';
+
+            if (status === 401) {
+               showModal('Warning!', 'Invalid email or password', false, '/');
+            } else if (status === 409) {
+               showModal('Warning!', 'Email already exists', false, '/');
+            } else if (status === 500) {
+               showModal('Warning!', 'Server error. Please try later.', false, '/');
+            } else {
+               showModal('Warning!', msg, false, '/');
+            }
          }
       }
    }
@@ -88,7 +84,9 @@ function Login({setShowModal, setModalData}: RegistrationLoginProps) {
 
          <div className="alternative-enter">
             <div>
-               <FaGoogle className="alternative-enter-img" />
+               <a href="http://localhost:3000/auth/google">
+                  <FaGoogle className="alternative-enter-img" />
+               </a>
             </div>
 
             <div>

@@ -3,7 +3,7 @@ import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import type { RegistrationLoginProps } from "./interfaces.ts";
 import axios from "axios";
 
-function Registration({setShowModal, setModalData}: RegistrationLoginProps) {
+function Registration({ showModal }: RegistrationLoginProps) {
    const [enterData, setEnterData] = useState({
       firstName: "",
       lastName: "",
@@ -25,21 +25,11 @@ function Registration({setShowModal, setModalData}: RegistrationLoginProps) {
       e.preventDefault();
 
       if (enterData.password !== repeatPassword) {
-         setShowModal(true);
-         setModalData({
-            title: "Warning!",
-            text: "Your passwords don't match!",
-            isOk: false,
-            navigateTo: "/main"
-         });
-      }  else if (enterData.firstName === "" || enterData.lastName === "" || enterData.email === "" || enterData.password === "") {
-         setShowModal(true);
-         setModalData({
-            title: "Warning!",
-            text: "At least one of the required fields is blank!",
-            isOk: false,
-            navigateTo: "/"
-         });
+         showModal("Warning!", "Your passwords don't match!", false, "/");
+      } else if (enterData.firstName === "" || enterData.lastName === "" || enterData.email === "" || enterData.password === "") {
+         showModal("Warning!", "At least one of the required fields is blank!", false, "/");
+      } else if (enterData.password.length < 6 ) {
+         showModal("Warning!", "Your password is too small. It should contain 6 or more symbols", false, "/");
       } else {
          try{
             const response = await axios.post(
@@ -49,22 +39,10 @@ function Registration({setShowModal, setModalData}: RegistrationLoginProps) {
             );
 
             const msg = response.data?.message;
-            setShowModal(true);
-            setModalData({
-               title: "Success!",
-               text: msg,
-               isOk: true,
-               navigateTo: "/main"
-            });
+            showModal("Success!", msg, true, "/main");
          } catch (err: any) {
             const errMsg = err.response?.data?.message;
-            setShowModal(true);
-            setModalData({
-               title: "Warning!",
-               text: errMsg,
-               isOk: false,
-               navigateTo: "/"
-            });
+            showModal("Warning!", errMsg, false, "/");
          }
       }
    }

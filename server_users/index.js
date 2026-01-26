@@ -44,8 +44,9 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use("local", new LocalStrategy(
-   {usernameField: "email", passwordField: "password"},
+   { usernameField: "email", passwordField: "password" },
    async (username, password, done) => {
       try{
          const response = await db.query("SELECT * FROM users WHERE email = $1", [username]);
@@ -72,6 +73,38 @@ passport.use("local", new LocalStrategy(
                return done(null, false);
             }
          });
+      } catch (err) {
+         return done(err);
+      }
+   }
+));
+
+passport.use("google",
+   new GoogleStrategy({
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/auth/google/callback",
+      passReqToCallback: true
+   },
+   async function(request, accessToken, refreshToken, profile, done) {
+      const firstName = profile.given_name;
+      const lastName = profile.family_name;
+      const email = profile.email;
+
+      try {
+         const response = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+
+         if (response.rowCount > 0) {
+            const user = response.rows[0];
+            return done(null, user);
+         } else {
+            const result = await db.query(
+               "INSERT INTO users (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *", 
+               [firstName, lastName, email, "google"]
+            );
+            const newUser = result.rows[0];
+            return done(null, newUser);
+         }
       } catch (err) {
          return done(err);
       }
@@ -140,6 +173,18 @@ app.get("/me", (req, res) => {
       return res.status(400).json({ message: "You are not authenticated" });
    }
 });
+
+app.get('/auth/google',
+   passport.authenticate('google', { scope:
+      [ 'email', 'profile' ] }
+));
+
+app.get('/auth/google/callback',
+   passport.authenticate('google', {
+      successRedirect: 'http://localhost:5173/main',
+      failureRedirect: 'http://localhost:5173/'
+   }
+));
 
 passport.serializeUser((user, done) => {
    done(null, user.id);

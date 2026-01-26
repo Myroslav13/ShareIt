@@ -6,6 +6,5 @@ export type ModalData = {
 };
 
 export interface RegistrationLoginProps {
-   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-   setModalData: React.Dispatch<React.SetStateAction<ModalData>>;
+   showModal: (title: string, text: string, isOk: boolean, navigateTo: string) => void;
 }
