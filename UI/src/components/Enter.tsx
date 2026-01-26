@@ -32,7 +32,7 @@ function Enter() {
    async function fetchMe() {
       try {
          const response = await axios.get("http://localhost:3000/me", { withCredentials: true });
-         if (response.status === 200 && response.data?.user) {
+         if (response.status === 200) {
             navigate("/main");
          }
       } catch (err: any) {

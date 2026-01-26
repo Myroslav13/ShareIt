@@ -1,12 +1,14 @@
 import { useState, useEffect} from "react";
+import ItemCard from "./ItemCard";
 
-function ItemCard() {
+function ListItems() {
    const [count, setCount] = useState(0);
 
    return (
       <>
+         <ItemCard/>
       </>
    );
 }
 
-export default ItemCard;
+export default ListItems;
