@@ -3,9 +3,26 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navigation from "./main_components/Navigation";
 import ListItems from "./main_components/ListItems";
+import ShortInfo from "./modals/ShortInfo";
 
 function Main() {
-   const [count, setCount] = useState(0);
+   const [isShowModal, setIsShowModal] = useState<boolean>(false);
+   const [modalData, setModalData] = useState({
+      title: "",
+      text: "",
+      isOk: true,
+      navigateTo: "/"
+   });
+
+   function showModal(title: string, text: string, isOk: boolean, navigateTo: string) {
+      setIsShowModal(true);
+      setModalData({
+         title: title,
+         text: text,
+         isOk: isOk,
+         navigateTo: navigateTo
+      });
+   }
 
    const navigate = useNavigate();
 
@@ -28,8 +45,12 @@ function Main() {
 
    return (
       <>
-         <Navigation />
+         <Navigation showModal={showModal}/>
          <ListItems />
+         {isShowModal && <div className="fixed inset-0 bg-black/50 z-40" />}
+         {isShowModal && 
+            <ShortInfo title={modalData.title} text={modalData.text} isOk={modalData.isOk} navigateTo={modalData.navigateTo} setIsShowModal={setIsShowModal}/>
+         }
       </>
    );
 }

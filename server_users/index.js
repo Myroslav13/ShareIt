@@ -220,6 +220,16 @@ app.get('/auth/google/callback',
    }
 ));
 
+app.post("/logout", (req, res) => {
+   req.logout((err) => {
+      if (err) {
+         return res.status(500).json({message: "Logout failed"});
+      }
+
+      return res.status(200).json({message: "Successfully logged out"});
+   });
+});
+
 app.get('/login/facebook', passport.authenticate('facebook'));
 
 // app.get('/login/facebook', passport.authenticate('facebook', {
