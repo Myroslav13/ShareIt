@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 import type { RegistrationLoginProps } from "./interfaces.ts";
 import axios from "axios";
 
@@ -64,16 +63,6 @@ function Registration({ showModal }: RegistrationLoginProps) {
             </form>
 
             <p className="text-center text-xs lg:text-sm mt-3">Or register via</p>
-
-            <div className="alternative-enter">
-               <div>
-                  <FaGoogle className="alternative-enter-img" />
-               </div>
-
-               <div>
-                  <FaFacebookF className="alternative-enter-img" />
-               </div>
-            </div>
          </div>
       </>
    );

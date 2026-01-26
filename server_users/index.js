@@ -7,6 +7,7 @@ import passport from "passport";
 import session from "express-session";
 import { Strategy as LocalStrategy } from "passport-local";
 import GoogleStrategy from "passport-google-oauth2";
+import FacebookStrategy from "passport-facebook";
 
 env.config();
  
@@ -111,6 +112,38 @@ passport.use("google",
    }
 ));
 
+// passport.use("facebook", 
+//    new FacebookStrategy({
+//       clientID: process.env.FACEBOOK_APP_ID,
+//       clientSecret: process.env.FACEBOOK_APP_SECRET,
+//       callbackURL: 'https://www.example.com/oauth2/redirect/facebook'
+//    },
+//    async function(accessToken, refreshToken, profile, done) {
+//       console.log(profile);
+//       const firstName = profile.given_name;
+//       const lastName = profile.family_name;
+//       const email = profile.email;
+
+//       try {
+//          const response = await db.query("SELECT * FROM users WHERE email = $1", [email]);
+
+//          if (response.rowCount > 0) {
+//             const user = response.rows[0];
+//             return done(null, user);
+//          } else {
+//             const result = await db.query(
+//                "INSERT INTO users (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *", 
+//                [firstName, lastName, email, "facebook"]
+//             );
+//             const newUser = result.rows[0];
+//             return done(null, newUser);
+//          }
+//       } catch (err) {
+//          return done(err);
+//       }
+//    }
+// ));
+
 app.post("/login", (req, res, next) => {
    passport.authenticate("local", (error, user) => {
       if (error) {
@@ -175,8 +208,9 @@ app.get("/me", (req, res) => {
 });
 
 app.get('/auth/google',
-   passport.authenticate('google', { scope:
-      [ 'email', 'profile' ] }
+   passport.authenticate('google', { 
+      scope: [ 'email', 'profile' ] 
+   }
 ));
 
 app.get('/auth/google/callback',
@@ -185,6 +219,12 @@ app.get('/auth/google/callback',
       failureRedirect: 'http://localhost:5173/'
    }
 ));
+
+app.get('/login/facebook', passport.authenticate('facebook'));
+
+// app.get('/login/facebook', passport.authenticate('facebook', {
+//   scope: [ 'email', 'user_location' ]
+// }));
 
 passport.serializeUser((user, done) => {
    done(null, user.id);

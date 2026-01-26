@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "./Login";
 import Registration from "./Registration";
 import ShortInfo from "./modals/ShortInfo";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 
 function Enter() {
    const [enterMode, setEnterMode] = useState<0 | 1>(0);
@@ -24,6 +27,23 @@ function Enter() {
       });
    }
 
+   const navigate = useNavigate();
+
+   async function fetchMe() {
+      try {
+         const response = await axios.get("http://localhost:3000/me", { withCredentials: true });
+         if (response.status === 200 && response.data?.user) {
+            navigate("/main");
+         }
+      } catch (err: any) {
+         return;
+      }
+   }
+   
+   useEffect(() => {
+      fetchMe();
+   }, []);
+
    return (
       <div className="flex flex-col md:flex-row items-center justify-around min-h-screen">
          <img src="src/assets/share-it.png" title="ShareIt" draggable={false} alt="share-it" className="w-[50%] sm:w-[40%] md:w-[45%] xl:w-[40%] 2xl:w-[35%]"/>
@@ -37,7 +57,20 @@ function Enter() {
                   <h2 className="pb-2">Registration</h2>
                </div>
             </div>
+
             {enterMode === 0 ? <Login showModal={showModal} /> : <Registration showModal={showModal}  />}
+            
+            <div className="alternative-enter">
+               <div>
+                  <a href="http://localhost:3000/auth/google">
+                     <FaGoogle className="alternative-enter-img" />
+                  </a>
+               </div>
+
+               <div>
+                  <FaFacebookF className="alternative-enter-img" />
+               </div>
+            </div>
          </div>
 
          {isShowModal && <div className="fixed inset-0 bg-black/50 z-40" />}

@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaGoogle, FaFacebookF } from 'react-icons/fa';
+import { useState } from "react";
 import type { RegistrationLoginProps } from "./interfaces.ts";
 import axios from "axios";
 
@@ -9,23 +7,6 @@ function Login({ showModal }: RegistrationLoginProps) {
       email: "",
       password: ""
    });
-   
-   const navigate = useNavigate();
-
-   async function fetchMe() {
-      try {
-         const response = await axios.get("http://localhost:3000/me", { withCredentials: true });
-         if (response.status === 200 && response.data?.user) {
-            navigate("/main");
-         }
-      } catch (err: any) {
-         return;
-      }
-   }
-   
-   useEffect(() => {
-      fetchMe();
-   }, []);
 
    function handleChange(e: any) {
       const { name, value } = e.target;
@@ -52,18 +33,8 @@ function Login({ showModal }: RegistrationLoginProps) {
             const msg = response.data?.message;
             showModal("Success!", msg, true, "/main");
          } catch (err: any) {
-            const status = err.response?.status;
-            const msg = err.response?.data?.message || err.message || 'Network error';
-
-            if (status === 401) {
-               showModal('Warning!', 'Invalid email or password', false, '/');
-            } else if (status === 409) {
-               showModal('Warning!', 'Email already exists', false, '/');
-            } else if (status === 500) {
-               showModal('Warning!', 'Server error. Please try later.', false, '/');
-            } else {
-               showModal('Warning!', msg, false, '/');
-            }
+            const msg = err.response?.data?.message;
+            showModal('Warning!', msg, false, '/');
          }
       }
    }
@@ -81,18 +52,6 @@ function Login({ showModal }: RegistrationLoginProps) {
          </form>
 
          <p className="text-center text-xs lg:text-sm mt-3">Or login via</p>
-
-         <div className="alternative-enter">
-            <div>
-               <a href="http://localhost:3000/auth/google">
-                  <FaGoogle className="alternative-enter-img" />
-               </a>
-            </div>
-
-            <div>
-               <FaFacebookF className="alternative-enter-img" />
-            </div>
-         </div>
       </div>
    );
 }
