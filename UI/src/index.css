@@ -47,3 +47,7 @@ body {
 .alternative-enter {
    @apply flex justify-center gap-2 mt-1;
 }
+
+.black-background {
+   @apply fixed inset-0 bg-black/50 z-40;
+}

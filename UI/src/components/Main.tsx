@@ -47,7 +47,7 @@ function Main() {
       <>
          <Navigation showModal={showModal}/>
          <ListItems />
-         {isShowModal && <div className="fixed inset-0 bg-black/50 z-40" />}
+         {isShowModal && <div className="black-background" />}
          {isShowModal && 
             <ShortInfo title={modalData.title} text={modalData.text} isOk={modalData.isOk} navigateTo={modalData.navigateTo} setIsShowModal={setIsShowModal}/>
          }

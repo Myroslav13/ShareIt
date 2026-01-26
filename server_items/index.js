@@ -1,6 +1,7 @@
 import express from "express";
 import pg from "pg";
 import env from "dotenv";
+import cors from "cors";
 
 env.config();
  
@@ -19,18 +20,20 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 app.get("/getAll", async (req, res) => {
    const ownerId = req.query.ownerId;
-   
-   try {
-      const result = await db.query("SELECT * FROM items WHERE owner_id = $1 ORDER BY id", [ownerId]);
 
-      if (result.rowCount > 0) {
-         return res.status(200).json( result.rows );
+   try {
+      let result;
+      if (ownerId) {
+         result = await db.query("SELECT * FROM items WHERE owner_id = $1 ORDER BY id", [ownerId]);
       } else {
-         return res.status(400).json({ error: 'Something went wrong' });
+         result = await db.query("SELECT * FROM items ORDER BY id");
       }
+
+      return res.status(200).json(result.rows || []);
    } catch (error) {
       return res.status(400).json({ error: `${error}` });
    }
