@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react";
 import ItemCard from "./ItemCard";
 import axios from "axios";
+import type { Item } from "./../interfaces";
 
 function ListItems() {
    const [allItems, setAllItems] = useState<any[]>([]);
@@ -17,8 +18,8 @@ function ListItems() {
 
    return (
       <div>
-         {allItems.map((el, id) => (
-            <ItemCard key={id} />
+         {allItems.map((el: Item, id) => (
+            <ItemCard key={id} itemData={el}/>
          ))}
       </div>
    );

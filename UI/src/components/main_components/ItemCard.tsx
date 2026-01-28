@@ -1,11 +1,16 @@
 import { useState, useEffect} from "react";
+import type { Item } from "./../interfaces";
 
-function ItemCard() {
+interface ItemCardProps {
+   itemData: Item
+}
+
+function ItemCard({ itemData }: ItemCardProps) {
    const [count, setCount] = useState(0);
 
    return (
       <>
-         <h1>ddddddddd</h1>
+         <h1>{ itemData.title }</h1>
       </>
    );
 }

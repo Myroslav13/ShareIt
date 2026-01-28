@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
-app.get("/getAll", async (req, res) => {
+app.get("/item", async (req, res) => {
    const ownerId = req.query.ownerId;
 
    try {
@@ -39,7 +39,7 @@ app.get("/getAll", async (req, res) => {
    }
 });
 
-app.get("/getItem/:id", async (req, res) => {
+app.get("/item/:id", async (req, res) => {
    const itemId = req.params.id;
    
    try {
@@ -55,7 +55,7 @@ app.get("/getItem/:id", async (req, res) => {
    }
 });
 
-app.post("/addItem", async (req, res) => {
+app.post("/item", async (req, res) => {
    const ownerId = req.body.owner_id;
    const title = req.body.title;
    const description = req.body.description;
@@ -76,8 +76,8 @@ app.post("/addItem", async (req, res) => {
    }
 });
 
-app.put("/editItem", async (req, res) => {
-   const itemId = req.body.item_id;
+app.put("/item/:id", async (req, res) => {
+   const itemId = req.params.id;
    const ownerId = req.body.owner_id;
    const title = req.body.title;
    const description = req.body.description;
@@ -97,7 +97,7 @@ app.put("/editItem", async (req, res) => {
    }
 });
 
-app.delete("/deleteItem/:id", async (req, res) => {
+app.delete("/item/:id", async (req, res) => {
    const itemId = req.params.id;
 
    try {
