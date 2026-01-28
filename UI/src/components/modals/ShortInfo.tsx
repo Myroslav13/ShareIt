@@ -10,7 +10,7 @@ interface ShortInfoProps {
    setIsShowModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function ShortInfo({title, text, isOk, navigateTo, setIsShowModal} : ShortInfoProps) {
+function ShortInfo({ title, text, isOk, navigateTo, setIsShowModal } : ShortInfoProps) {
    const navigate = useNavigate();
 
    function handleClose() {

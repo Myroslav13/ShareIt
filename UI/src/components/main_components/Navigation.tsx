@@ -22,6 +22,10 @@ function Navigation({ showModal }: NavigationProps) {
       }
    }
 
+   async function showProfile() {
+
+   }
+
    return (
       <>
          <div className="border-b border-gray-400 flex items-center justify-between py-5 px-10">
@@ -34,9 +38,10 @@ function Navigation({ showModal }: NavigationProps) {
                   <BsPersonCircle size={30} className="cursor-pointer" onMouseEnter={() => setShowProfileChange(prevValue => !prevValue)} />
 
                   {showProfileChange && (
-                     <div className="absolute top-full right-0 mt-2 border p-2 rounded-2xl bg-white shadow w-[75px]">
-                        <ul>
-                           <li className="cursor-pointer" onClick={() => handleLogout()}>Log out</li>
+                     <div className="absolute top-full right-0 mt-2 border p-2 rounded-2xl bg-white shadow w-[90px]">
+                        <ul className="divide-y divide-gray-400">
+                           <li className="cursor-pointer py-1" onClick={() => showProfile()}>My Profile</li>
+                           <li className="cursor-pointer py-1" onClick={() => handleLogout()}>Log out</li>
                         </ul>
                      </div>
                   )}

@@ -8,8 +8,8 @@ function Login({ showModal }: RegistrationLoginProps) {
       password: ""
    });
 
-   function handleChange(e: any) {
-      const { name, value } = e.target;
+   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+      const { name, value } = e.currentTarget;
 
       setEnterData(prevData => ({
          ...prevData,

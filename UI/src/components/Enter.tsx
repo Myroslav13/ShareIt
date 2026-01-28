@@ -58,7 +58,7 @@ function Enter() {
                </div>
             </div>
 
-            {enterMode === 0 ? <Login showModal={showModal} /> : <Registration showModal={showModal}  />}
+            {enterMode === 0 ? <Login showModal={showModal} /> : <Registration showModal={showModal} />}
             
             <div className="alternative-enter">
                <div>

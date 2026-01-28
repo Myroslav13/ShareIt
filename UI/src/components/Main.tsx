@@ -45,7 +45,7 @@ function Main() {
 
    return (
       <>
-         <Navigation showModal={showModal}/>
+         <Navigation showModal={ showModal } />
          <ListItems />
          {isShowModal && <div className="black-background" />}
          {isShowModal && 

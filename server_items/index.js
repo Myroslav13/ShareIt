@@ -24,18 +24,24 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 app.get("/item", async (req, res) => {
    const ownerId = req.query.ownerId;
+   const page = req.query.page;
+   const limit = req.query.limit;
+
+   const offset = (page-1) * limit;
+
+   console.log(offset);
 
    try {
       let result;
       if (ownerId) {
-         result = await db.query("SELECT * FROM items WHERE owner_id = $1 ORDER BY id", [ownerId]);
+         result = await db.query("SELECT * FROM items WHERE owner_id = $1 ORDER BY id LIMIT $2 OFFSET $3", [ownerId, limit, offset]);
       } else {
-         result = await db.query("SELECT * FROM items ORDER BY id");
+         result = await db.query("SELECT * FROM items ORDER BY id LIMIT $1 OFFSET $2", [limit, offset]);
       }
 
-      return res.status(200).json(result.rows || []);
+      return res.status(200).json(result.rows);
    } catch (error) {
-      return res.status(400).json({ error: `${error}` });
+      return res.status(500).json({ error: `${error}` });
    }
 });
 
@@ -46,12 +52,12 @@ app.get("/item/:id", async (req, res) => {
       const result = await db.query("SELECT * FROM items WHERE id = $1", [itemId]);
 
       if (result.rowCount > 0) {
-         return res.status(200).json( result.rows[0] );
+         return res.status(200).json(result.rows[0]);
       } else {
          return res.status(400).json({ error: 'Something went wrong' });
       }
    } catch (error) {
-      return res.status(400).json({ error: `${error}` });
+      return res.status(500).json({ error: `${error}` });
    }
 });
 
@@ -72,7 +78,7 @@ app.post("/item", async (req, res) => {
          return res.status(400).json({ error: 'Something went wrong' });
       }
    } catch (error) {
-      return res.status(400).json({ error: `${error}` });
+      return res.status(500).json({ error: `${error}` });
    }
 });
 
@@ -93,7 +99,7 @@ app.put("/item/:id", async (req, res) => {
          return res.status(400).json({ error: 'Something went wrong' });
       }
    } catch (error) {
-      return res.status(400).json({ error: `${error}` });
+      return res.status(500).json({ error: `${error}` });
    }
 });
 
@@ -109,7 +115,7 @@ app.delete("/item/:id", async (req, res) => {
          return res.status(400).json({ error: 'Something went wrong' });
       }
    } catch (error) {
-      return res.status(400).json({ error: `${error}` });
+      return res.status(500).json({ error: `${error}` });
    }
 });
 
