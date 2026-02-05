@@ -70,7 +70,7 @@ function Main() {
             <ShortInfo modalData={ modalData } setIsShowModal={ setIsShowModal } />
          }
          {isAddingItemModal && 
-            <ItemAdding setIsAddingItemModal={ setIsAddingItemModal } />
+            <ItemAdding myId={ myId } showModal={ showModal } setIsAddingItemModal={ setIsAddingItemModal } />
          }
       </>
    );

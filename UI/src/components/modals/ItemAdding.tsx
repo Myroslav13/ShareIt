@@ -1,15 +1,45 @@
 import { useState } from "react";
 import type { Item } from "../../interfaces";
+import axios from "axios";
 
 interface ItemAdding {
+   myId: number,
+   showModal: (title: string, text: string, isOk: boolean, navigateTo: string) => void,
    setIsAddingItemModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function ItemAdding({ setIsAddingItemModal }: ItemAdding) {
-   const [itemData, setItemData] = useState<Partial<Item>>({});
+function ItemAdding({ myId, showModal, setIsAddingItemModal }: ItemAdding) {
+   const [itemData, setItemData] = useState<Partial<Item>>({
+      owner_id: 0,
+      price: "",
+      title: "",
+      description: "",
+   });
 
-   function handleSubmit(e: React.FormEvent) {
+   async function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
+
+      if (itemData.title && itemData.description && itemData.price) {
+         const ownerId = myId;
+
+         const response = await axios.post(
+            "http://localhost:3500/item",
+            { owner_id: ownerId, title: itemData.title, description: itemData.description, price: Number(itemData.price) },
+            { withCredentials: true }
+         );
+
+         console.log(response.status);
+
+         if (response.status === 200) {
+            showModal("Success!", "You successfully added the new item", true, "/main");
+         } else {
+            const msg = response.data?.message;
+            showModal("Warning!", msg, false, "/main");
+         }
+      } else {
+         showModal("Warning!", "At least one of the required fields is blank!", false, "/main");
+      }
+
       setIsAddingItemModal(false);
    }
 
@@ -25,7 +55,7 @@ function ItemAdding({ setIsAddingItemModal }: ItemAdding) {
    }
 
    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 z-40 flex items-center justify-center">
          <div className="bg-white p-5 rounded-xl w-[300px] shadow-lg">
             <div className="w-[100%] flex flex-col justify-center items-center">
 

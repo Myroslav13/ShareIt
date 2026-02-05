@@ -5,7 +5,7 @@ export interface RegistrationLoginProps {
 export interface Item {
    id: number,
    owner_id: number,
-   price: number,
+   price: number | "",
    title: string,
    description: string,
    created_at: string
