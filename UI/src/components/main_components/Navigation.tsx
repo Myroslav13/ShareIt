@@ -7,10 +7,11 @@ import { fetchAllItems } from "../../fetchAll";
 interface NavigationProps {
    myId: number,
    showModal: (title: string, text: string, isOk: boolean, navigateTo: string) => void,
+   setIsAddingItemModal: (isAddingItemModal: boolean) => void,
    setAllItems: (allItems: Item[]) => void
 }
 
-function Navigation({ myId, showModal, setAllItems }: NavigationProps) {
+function Navigation({ myId, showModal, setIsAddingItemModal, setAllItems }: NavigationProps) {
    const [startDate, setStartDate] = useState("");
    const [endDate, setEndDate] = useState("");
    const [location, setLocation] = useState("");
@@ -26,6 +27,10 @@ function Navigation({ myId, showModal, setAllItems }: NavigationProps) {
 
    async function showProfile() {
 
+   }
+
+   async function handleItemAdding() {
+      setIsAddingItemModal(true);
    }
 
    async function handleSearch() {
@@ -58,7 +63,7 @@ function Navigation({ myId, showModal, setAllItems }: NavigationProps) {
             <h1 className="text-3xl font-bold">Share<span className="text-[#00C9A7]">It</span></h1>
 
             <div className="flex items-center gap-4">
-               <button className="bg-[#00C9A7] text-white rounded-2xl font-bold shadow px-4 py-2 cursor-pointer hover:bg-[#00A88D]">Add a new item</button>
+               <button className="bg-[#00C9A7] text-white rounded-2xl font-bold shadow px-4 py-2 cursor-pointer hover:bg-[#00A88D]" onClick={() => handleItemAdding()}>Add a new item</button>
 
                <div className="relative">
                   <BsPersonCircle size={30} className="cursor-pointer" onMouseEnter={() => setShowProfileChange(prevValue => !prevValue)} />

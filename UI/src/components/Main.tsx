@@ -6,10 +6,12 @@ import ListItems from "./main_components/ListItems";
 import ShortInfo from "./modals/ShortInfo";
 import type { ModalData, Item } from "../interfaces";
 import { fetchAllItems } from "../fetchAll";
+import ItemAdding from "./modals/ItemAdding";
 
 function Main() {
    const [allItems, setAllItems] = useState<Item[]>([]);
    const [isShowModal, setIsShowModal] = useState<boolean>(false);
+   const [isAddingItemModal, setIsAddingItemModal] = useState<boolean>(false);
    const [myId, setMyId] = useState<number>(0);
    const [modalData, setModalData] = useState<ModalData>({
       title: "",
@@ -61,11 +63,14 @@ function Main() {
 
    return (
       <>
-         <Navigation myId={ myId } showModal={ showModal } setAllItems={ setAllItems } />
+         <Navigation myId={ myId } showModal={ showModal } setIsAddingItemModal={ setIsAddingItemModal } setAllItems={ setAllItems } />
          <ListItems allItems={ allItems } />
-         {isShowModal && <div className="black-background" />}
+         {(isShowModal || isAddingItemModal) && <div className="black-background" />}
          {isShowModal && 
             <ShortInfo modalData={ modalData } setIsShowModal={ setIsShowModal } />
+         }
+         {isAddingItemModal && 
+            <ItemAdding setIsAddingItemModal={ setIsAddingItemModal } />
          }
       </>
    );
