@@ -4,10 +4,15 @@ import { useNavigate } from "react-router-dom";
 import Navigation from "./main_components/Navigation";
 import ListItems from "./main_components/ListItems";
 import ShortInfo from "./modals/ShortInfo";
+import type { ModalData } from "../interfaces";
+import type { Item } from "../interfaces";
+import { fetchAllItems } from "../fetchAll";
 
 function Main() {
+   const [allItems, setAllItems] = useState<Item[]>([]);
    const [isShowModal, setIsShowModal] = useState<boolean>(false);
-   const [modalData, setModalData] = useState({
+   const [myId, setMyId] = useState<number>(0);
+   const [modalData, setModalData] = useState<ModalData>({
       title: "",
       text: "",
       isOk: true,
@@ -30,7 +35,10 @@ function Main() {
       try {
          const response = await axios.get("http://localhost:3000/me", { withCredentials: true });
          if (response.status === 200 && response.data?.user){
-            return;
+            const data = response.data;
+            const id = data.user.id;
+            setMyId(id);
+            return id;
          }
 
          navigate("/");
@@ -40,16 +48,25 @@ function Main() {
    }
 
    useEffect(() => {
-      fetchMe();
+      (async () => {
+         const id = await fetchMe();
+         try {
+            const items = await fetchAllItems({page: 1, limit: 10, excludeOwnerId: id});
+            if (Array.isArray(items)) setAllItems(items);
+            else if (items?.items) setAllItems(items.items);
+         } catch (err) {
+            console.error("Failed to fetch items", err);
+         }
+      })();
    }, []);
 
    return (
       <>
-         <Navigation showModal={ showModal } />
-         <ListItems />
+         <Navigation myId={myId} showModal={ showModal } setAllItems={ setAllItems } />
+         <ListItems allItems={ allItems } />
          {isShowModal && <div className="black-background" />}
          {isShowModal && 
-            <ShortInfo title={modalData.title} text={modalData.text} isOk={modalData.isOk} navigateTo={modalData.navigateTo} setIsShowModal={setIsShowModal}/>
+            <ShortInfo modalData={ modalData } setIsShowModal={ setIsShowModal } />
          }
       </>
    );

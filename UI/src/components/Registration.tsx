@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { RegistrationLoginProps } from "./interfaces.ts";
+import type { RegistrationLoginProps } from "../interfaces.ts";
 import axios from "axios";
 
 function Registration({ showModal }: RegistrationLoginProps) {

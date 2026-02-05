@@ -75,7 +75,7 @@ function Enter() {
 
          {isShowModal && <div className="black-background" />}
          {isShowModal && 
-            <ShortInfo title={modalData.title} text={modalData.text} isOk={modalData.isOk} navigateTo={modalData.navigateTo} setIsShowModal={setIsShowModal}/>
+            <ShortInfo modalData={modalData} setIsShowModal={setIsShowModal}/>
          }
       </div>
    );

@@ -24,20 +24,61 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 app.get("/item", async (req, res) => {
    const ownerId = req.query.ownerId;
-   const page = req.query.page;
-   const limit = req.query.limit;
+   const excludeOwnerId = req.query.excludeOwnerId;
+   const page = parseInt(req.query.page) || 1;
+   const limit = parseInt(req.query.limit) || 20;
+   const offset = (page - 1) * limit;
 
-   const offset = (page-1) * limit;
-
-   console.log(offset);
+   const location = req.query.location;
+   const startDate = req.query.startDate;
+   const endDate = req.query.endDate;
+   const title = req.query.title;
 
    try {
-      let result;
+      let params = [];
+      let where = [];
+      let joinUsers = false;
+
       if (ownerId) {
-         result = await db.query("SELECT * FROM items WHERE owner_id = $1 ORDER BY id LIMIT $2 OFFSET $3", [ownerId, limit, offset]);
-      } else {
-         result = await db.query("SELECT * FROM items ORDER BY id LIMIT $1 OFFSET $2", [limit, offset]);
+         where.push(`items.owner_id = $${params.length + 1}`);
+         params.push(ownerId);
       }
+
+      if (excludeOwnerId) {
+         where.push(`items.owner_id != $${params.length + 1}`);
+         params.push(excludeOwnerId);
+      }
+
+      if (title) {
+         where.push(`items.title ILIKE $${params.length + 1}`);
+         params.push(`%${title}%`);
+      }
+
+      if (startDate) {
+         where.push(`items.created_at::date >= $${params.length + 1}::date`);
+         params.push(startDate);
+      }
+
+      if (endDate) {
+         where.push(`items.created_at::date <= $${params.length + 1}::date`);
+         params.push(endDate);
+      }
+
+      if (location) {
+         joinUsers = true;
+         where.push(`users.location = $${params.length + 1}`);
+         params.push(location);
+      }
+
+      let baseQuery = 'SELECT items.* FROM items';
+      if (joinUsers) baseQuery += ' JOIN users ON items.owner_id = users.id';
+
+      if (where.length > 0) baseQuery += ' WHERE ' + where.join(' AND ');
+
+      baseQuery += ` ORDER BY items.id LIMIT $${params.length + 1} OFFSET $${params.length + 2}`;
+      params.push(limit, offset);
+
+      const result = await db.query(baseQuery, params);
 
       return res.status(200).json(result.rows);
    } catch (error) {

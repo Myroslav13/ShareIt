@@ -40,6 +40,7 @@ app.use(session({
    saveUninitialized: true,
    cookie: {
       maxAge: 1000 * 60 * 60,
+      sameSite: 'lax'
    }
 }));
 
@@ -159,7 +160,11 @@ app.post("/login", (req, res, next) => {
             return next(err);
          }
 
-         return res.status(200).json({message: "Successfully logged in", user: user});
+         // ensure session is saved and Set-Cookie is sent before responding
+         req.session.save((saveErr) => {
+            if (saveErr) return next(saveErr);
+            return res.status(200).json({message: "Successfully logged in", user: user});
+         });
       });
    })(req, res, next);
 });
@@ -186,7 +191,10 @@ app.post("/register", async (req, res) => {
             return res.status(400).json({ message: "Something went wrong" });
          }
 
-         return res.status(200).json({ message: "Successfully registered", user });
+         req.session.save((saveErr) => {
+            if (saveErr) return res.status(400).json({ message: "Something went wrong" });
+            return res.status(200).json({ message: "Successfully registered", user });
+         });
       });
    } catch (err) {
       const message = err?.detail || err?.message;
