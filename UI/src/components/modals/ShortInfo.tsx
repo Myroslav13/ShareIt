@@ -1,5 +1,4 @@
-import { BsExclamationTriangle } from "react-icons/bs";
-import { BsCheckCircle } from "react-icons/bs";
+import { BsExclamationTriangle, BsCheckCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import type { ModalData } from "../../interfaces";
 

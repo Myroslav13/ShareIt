@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navigation from "./main_components/Navigation";
 import ListItems from "./main_components/ListItems";
 import ShortInfo from "./modals/ShortInfo";
-import type { ModalData } from "../interfaces";
-import type { Item } from "../interfaces";
+import type { ModalData, Item } from "../interfaces";
 import { fetchAllItems } from "../fetchAll";
 
 function Main() {
@@ -62,7 +61,7 @@ function Main() {
 
    return (
       <>
-         <Navigation myId={myId} showModal={ showModal } setAllItems={ setAllItems } />
+         <Navigation myId={ myId } showModal={ showModal } setAllItems={ setAllItems } />
          <ListItems allItems={ allItems } />
          {isShowModal && <div className="black-background" />}
          {isShowModal && 

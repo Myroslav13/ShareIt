@@ -1,12 +1,8 @@
 import { useState } from "react";
-import { BsPersonCircle } from "react-icons/bs";
-import { BsFillGeoAltFill } from "react-icons/bs";
-import { BsCalendar4Event } from "react-icons/bs";
-import { BsSearch } from "react-icons/bs";
-import type { Item } from "../../interfaces";
+import { BsFillGeoAltFill, BsCalendar4Event, BsPersonCircle, BsSearch } from "react-icons/bs";
+import type { Item, RequestData } from "../../interfaces";
 import axios from "axios";
 import { fetchAllItems } from "../../fetchAll";
-import type { RequestData } from "../../interfaces";
 
 interface NavigationProps {
    myId: number,
@@ -34,7 +30,7 @@ function Navigation({ myId, showModal, setAllItems }: NavigationProps) {
 
    async function handleSearch() {
       console.log(startDate, endDate, location, itemName);
-      const requestData: Partial<RequestData> = { page: 1, limit: 10 };
+      const requestData: Partial<RequestData> = { page: 1, limit: 10, excludeOwnerId: myId };
       if (itemName.trim() !== "") requestData.title = itemName.trim();
       if (location.trim() !== "") requestData.location = location.trim();
       if (startDate !== "") requestData.startDate = startDate;
