@@ -34,7 +34,6 @@ function Navigation({ myId, showModal, setIsAddingItemModal, setAllItems }: Navi
    }
 
    async function handleSearch() {
-      console.log(startDate, endDate, location, itemName);
       const requestData: Partial<RequestData> = { page: 1, limit: 10, excludeOwnerId: myId };
       if (itemName.trim() !== "") requestData.title = itemName.trim();
       if (location.trim() !== "") requestData.location = location.trim();

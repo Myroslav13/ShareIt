@@ -16,8 +16,8 @@ function ShortInfo({ modalData, setIsShowModal } : ShortInfoProps) {
    }
 
    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
-         <div className="bg-white p-5 rounded-xl w-[300px] shadow-lg">
+      <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+         <div className="bg-white p-5 rounded-xl w-[300px] shadow-lg pointer-events-auto">
             <div className="w-[100%] flex flex-col justify-center items-center">
                {modalData.isOk ? 
                   <BsCheckCircle className="modal-img text-green-500" /> 

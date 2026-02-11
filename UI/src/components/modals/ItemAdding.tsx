@@ -24,11 +24,9 @@ function ItemAdding({ myId, showModal, setIsAddingItemModal }: ItemAdding) {
 
          const response = await axios.post(
             "http://localhost:3500/item",
-            { owner_id: ownerId, title: itemData.title, description: itemData.description, price: Number(itemData.price) },
+            { owner_id: ownerId, title: itemData.title, description: itemData.description, price: itemData.price },
             { withCredentials: true }
          );
-
-         console.log(response.status);
 
          if (response.status === 200) {
             showModal("Success!", "You successfully added the new item", true, "/main");
@@ -55,15 +53,15 @@ function ItemAdding({ myId, showModal, setIsAddingItemModal }: ItemAdding) {
    }
 
    return (
-      <div className="fixed inset-0 z-40 flex items-center justify-center">
-         <div className="bg-white p-5 rounded-xl w-[300px] shadow-lg">
+      <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
+         <div className="bg-white p-5 rounded-xl w-[400px] shadow-lg pointer-events-auto">
             <div className="w-[100%] flex flex-col justify-center items-center">
-
                <form className="enter-form" onSubmit={(e) => handleSubmit(e)}>
                   <div className="form-inputs">
+                     <h1 className="text-2xl text-center font-bold">Item adding</h1>
                      <input type="text" name="title" placeholder="Title" className="input" onChange={(e) => handleChange(e)} value={ itemData.title }/>
                      <input type="text" name="description" placeholder="Description" className="input" onChange={(e) => handleChange(e)} value={ itemData.description }/>
-                     <input type="text" name="price" placeholder="Price" className="input" onChange={(e) => handleChange(e)} value={ itemData.price }/>
+                     <input type="number" step="1" min="0" name="price" placeholder="Price" className="input" onChange={(e) => handleChange(e)} value={ itemData.price }/>
                   </div>
                   <button type="submit" className="enter-btn">Add</button>
                </form>

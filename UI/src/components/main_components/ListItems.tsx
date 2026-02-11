@@ -7,7 +7,7 @@ interface ListItemProps {
 
 function ListItems({ allItems }: ListItemProps) {
    return (
-      <div className="flex gap-3 mt-4">
+      <div className="flex gap-3 mt-4 px-4">
          {allItems.map((el: Item, id) => (
             <ItemCard key={id} itemData={el}/>
          ))}

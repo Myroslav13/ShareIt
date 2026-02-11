@@ -40,27 +40,27 @@ app.get("/item", async (req, res) => {
       let joinUsers = false;
 
       if (ownerId) {
-         where.push(`items.owner_id = $${params.length + 1}`);
+         where.push(`owner_id = $${params.length + 1}`);
          params.push(ownerId);
       }
 
       if (excludeOwnerId) {
-         where.push(`items.owner_id != $${params.length + 1}`);
+         where.push(`owner_id != $${params.length + 1}`);
          params.push(excludeOwnerId);
       }
 
       if (title) {
-         where.push(`items.title ILIKE $${params.length + 1}`);
+         where.push(`title ILIKE $${params.length + 1}`);
          params.push(`%${title}%`);
       }
 
       if (startDate) {
-         where.push(`items.created_at::date >= $${params.length + 1}::date`);
+         where.push(`created_at::date >= $${params.length + 1}::date`);
          params.push(startDate);
       }
 
       if (endDate) {
-         where.push(`items.created_at::date <= $${params.length + 1}::date`);
+         where.push(`created_at::date <= $${params.length + 1}::date`);
          params.push(endDate);
       }
 
@@ -70,7 +70,7 @@ app.get("/item", async (req, res) => {
          params.push(location);
       }
 
-      let baseQuery = 'SELECT items.* FROM items';
+      let baseQuery = 'SELECT * FROM items';
       if (joinUsers) baseQuery += ' JOIN users ON items.owner_id = users.id';
 
       if (where.length > 0) baseQuery += ' WHERE ' + where.join(' AND ');

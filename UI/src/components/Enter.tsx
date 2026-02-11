@@ -17,7 +17,7 @@ function Enter() {
       navigateTo: "/"
    });
 
-   function showModal (title: string, text: string, isOk: boolean, navigateTo: string) {
+   function showModal(title: string, text: string, isOk: boolean, navigateTo: string) {
       setIsShowModal(true);
       setModalData({
          title: title,

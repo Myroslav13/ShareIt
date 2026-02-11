@@ -65,7 +65,9 @@ function Main() {
       <>
          <Navigation myId={ myId } showModal={ showModal } setIsAddingItemModal={ setIsAddingItemModal } setAllItems={ setAllItems } />
          <ListItems allItems={ allItems } />
-         {(isShowModal || isAddingItemModal) && <div className="black-background" />}
+         {(isShowModal || isAddingItemModal) && (
+            <div className="black-background z-30" onClick={() => { setIsAddingItemModal(false); setIsShowModal(false); }} />
+         )}
          {isShowModal && 
             <ShortInfo modalData={ modalData } setIsShowModal={ setIsShowModal } />
          }
