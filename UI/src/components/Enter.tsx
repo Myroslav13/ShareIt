@@ -8,7 +8,6 @@ import { FaGoogle, FaFacebookF } from 'react-icons/fa';
 
 function Enter() {
    const [enterMode, setEnterMode] = useState<0 | 1>(0);
-
    const [isShowModal, setIsShowModal] = useState<boolean>(false);
    const [modalData, setModalData] = useState({
       title: "",

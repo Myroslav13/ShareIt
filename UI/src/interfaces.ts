@@ -29,3 +29,10 @@ export interface RequestData {
    endDate: string,
    title: string,
 }
+
+export interface UserData {
+   firstName: string,
+   lastName: string,
+   email: string,
+   location: string
+}
