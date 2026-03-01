@@ -1,0 +1,73 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: shareit_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: myroslav13
+      POSTGRES_DB: Kursova
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d Kursova"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  prisma-init:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: shareit_prisma_init
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:myroslav13@db:5432/Kursova?schema=public
+    command: ["sh", "-c", "npx prisma db push && npm run seed"]
+
+  user-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: shareit_user_service
+    depends_on:
+      prisma-init:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgresql://postgres:myroslav13@db:5432/Kursova?schema=public
+      USER_SERVICE_PORT: 3001
+    ports:
+      - "3001:3001"
+    command: ["npm", "run", "start:user"]
+
+  product-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: shareit_product_service
+    depends_on:
+      prisma-init:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgresql://postgres:myroslav13@db:5432/Kursova?schema=public
+      PRODUCT_SERVICE_PORT: 3002
+    ports:
+      - "3002:3002"
+    command: ["npm", "run", "start:product"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: shareit_frontend
+    depends_on:
+      - user-service
+      - product-service
+    ports:
+      - "5173:5173"
+
+volumes:
+  postgres_data:
