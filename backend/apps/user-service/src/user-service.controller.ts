@@ -1,14 +1,15 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { UserServiceService } from './user-service.service';
 import { CreateUserDTO } from './dto/create-user.dto';
+import { filteredQueryUserDto } from './dto/filtered-query.dto';
 
 @Controller('user')
 export class UserServiceController {
   constructor(private readonly userServiceService: UserServiceService) {}
 
    @Get()
-   async getAllUsers() {
-      return this.userServiceService.getAllUsers();
+   async getAllUsers(@Query() query: filteredQueryUserDto) {
+      return this.userServiceService.getAllUsers(query);
    }
 
    @Get(':id')

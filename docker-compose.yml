@@ -41,7 +41,7 @@ services:
       USER_SERVICE_PORT: 3001
     ports:
       - "3001:3001"
-    command: ["npm", "run", "start:user"]
+    command: ["sh", "-c", "npm run build:user && node dist/apps/user-service/user-service/src/main.js"]
 
   product-service:
     build:
@@ -56,7 +56,7 @@ services:
       PRODUCT_SERVICE_PORT: 3002
     ports:
       - "3002:3002"
-    command: ["npm", "run", "start:product"]
+    command: ["sh", "-c", "npm run build:product && node dist/apps/product-service/main.js"]
 
   frontend:
     build:

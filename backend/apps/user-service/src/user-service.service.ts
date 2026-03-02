@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 import { CreateUserDTO } from './dto/create-user.dto';
+import { filteredQueryUserDto } from './dto/filtered-query.dto';
 
 @Injectable()
 export class UserServiceService {
@@ -24,8 +25,18 @@ export class UserServiceService {
    }
 
    // Get requests
-   async getAllUsers() {
-      return this.prisma.users.findMany();
+   async getAllUsers(query: filteredQueryUserDto) {
+      const page = query.page ?? 1;
+      const pageSize = query.pageSize ?? 20;
+      
+      return this.prisma.users.findMany({
+         where: {
+            ...(query.role_id && { role_id: query.role_id }),
+            ...(query.location_id && { location_id: query.location_id }),
+         },
+         skip: (page - 1) * pageSize,
+         take: pageSize,
+      });
    }
 
    async getUserById(id: number) {
@@ -40,21 +51,33 @@ export class UserServiceService {
 
    // Post requests
    async createUser(data: CreateUserDTO) {
-      return this.prisma.users.create({
-         data,
-      });
+      try {
+         return await this.prisma.users.create({
+            data,
+         });
+      } catch (error) {
+         if (error.code === 'P2002') {
+            throw new BadRequestException('Email already exists');
+         }
+      }
    }
 
    // Put requests
    async updateUser(id: number, data: CreateUserDTO) {
       await this.isExisting(id);
 
-      return this.prisma.users.update({
-         where: { 
-            user_id: id 
-         },
-         data,
-      });
+      try {
+         return await this.prisma.users.update({
+            where: { 
+               user_id: id 
+            },
+            data,
+         });
+      } catch (error) {
+         if (error.code === 'P2002') {
+            throw new BadRequestException('Email already exists');
+         }
+      }
    }
 
    // Delete requests

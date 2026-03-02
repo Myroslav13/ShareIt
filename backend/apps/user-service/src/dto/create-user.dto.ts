@@ -1,8 +1,27 @@
+import { IsString, IsNotEmpty, IsInt } from "class-validator";
+
 export class CreateUserDTO {
-   first_name: string;
-   last_name: string;
-   email: string;
-   password_hash: string;
-   role_id?: number;
-   location_id?: number;
+   @IsString()
+   @IsNotEmpty()
+   first_name!: string;
+
+   @IsString()
+   @IsNotEmpty()
+   last_name!: string;
+
+   @IsString()
+   @IsNotEmpty()
+   email!: string;
+
+   @IsString()
+   @IsNotEmpty()
+   password_hash!: string;
+
+   @IsInt()
+   @IsNotEmpty()
+   role_id!: number;
+   
+   @IsInt()
+   @IsNotEmpty()
+   location_id!: number;
 };
