@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/user-service/tsconfig.app.json"
       }
+    },
+    "rentals-service": {
+      "type": "application",
+      "root": "apps/rentals-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/rentals-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/rentals-service/tsconfig.app.json"
+      }
     }
   }
 }

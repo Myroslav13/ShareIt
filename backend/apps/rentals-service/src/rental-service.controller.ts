@@ -8,27 +8,27 @@ export class RentalServiceController {
   constructor(private readonly rentalServiceService: RentalServiceService) {}
 
    @Get()
-   async getAllProducts(@Query() query: filteredQueryRentalDto) {
-      return this.rentalServiceService.getAllProducts(query);
+   async getAllRentals(@Query() query: filteredQueryRentalDto) {
+      return this.rentalServiceService.getAllRentals(query);
    }
 
    @Get(':id')
-   async getProductById(@Param('id', ParseIntPipe) id: number) {
-      return this.rentalServiceService.getProductById(id);
+   async getRentalById(@Param('id', ParseIntPipe) id: number) {
+      return this.rentalServiceService.getRentalById(id);
    }
 
    @Post()
-   async createProduct(@Body() productData: CreateRentalDTO) {
-      return this.rentalServiceService.createProduct(productData);
+   async createRental(@Body() rentalData: CreateRentalDTO) {
+      return this.rentalServiceService.createRental(rentalData);
    }
 
    @Put(':id')
-   async updateProduct(@Param('id', ParseIntPipe) id: number, @Body() productData: CreateRentalDTO) {
-      return this.rentalServiceService.updateProduct(id, productData);
+   async updateRental(@Param('id', ParseIntPipe) id: number, @Body() rentalData: CreateRentalDTO) {
+      return this.rentalServiceService.updateRental(id, rentalData);
    }
 
    @Delete(':id')
-   async deleteProduct(@Param('id', ParseIntPipe) id: number) {
-      return this.rentalServiceService.deleteProduct(id);
+   async deleteRental(@Param('id', ParseIntPipe) id: number) {
+      return this.rentalServiceService.deleteRental(id);
    }
 }

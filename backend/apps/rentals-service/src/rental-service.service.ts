@@ -24,7 +24,7 @@ export class RentalServiceService {
       return rental;
    }
 
-   async getAllProducts(query: filteredQueryRentalDto) {
+   async getAllRentals(query: filteredQueryRentalDto) {
       const page = Number(query.page ?? 1);
       const pageSize = Number(query.pageSize ?? 20);
 
@@ -40,7 +40,7 @@ export class RentalServiceService {
       // });
    }
 
-   async getProductById(id: number) {
+   async getRentalById(id: number) {
       await this.isExisting(id);
 
       return this.prisma.rentals.findUnique({
@@ -50,13 +50,13 @@ export class RentalServiceService {
       });
    }
 
-   async createProduct(productData: CreateRentalDTO) {
+   async createRental(rentalData: CreateRentalDTO) {
       // return this.prisma.rentals.create({
       //    data: productData,
       // });
    }
 
-   async updateProduct(id: number, productData: CreateRentalDTO) {
+   async updateRental(id: number, rentalData: CreateRentalDTO) {
       await this.isExisting(id);
 
       // return this.prisma.rentals.update({
@@ -67,7 +67,7 @@ export class RentalServiceService {
       // });
    }
 
-   async deleteProduct(id: number) {
+   async deleteRental(id: number) {
       await this.isExisting(id);
 
       return this.prisma.rentals.delete({
