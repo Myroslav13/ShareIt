@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { filteredQueryUserDto } from './dto/filtered-query.dto';
+import { filteredQueryUserDto } from './dto/user-query.dto';
 
 @Injectable()
 export class UserServiceService {

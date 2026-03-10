@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { UserServiceService } from './user-service.service';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { filteredQueryUserDto } from './dto/filtered-query.dto';
+import { filteredQueryUserDto } from './dto/user-query.dto';
 
 @Controller('user')
 export class UserServiceController {

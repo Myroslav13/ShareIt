@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Put, Delete, Param, ParseIntPipe, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, ParseIntPipe, Body, Query } from '@nestjs/common';
 import { ProductServiceService } from './product-service.service';
 import { CreateProductDTO } from './dto/create-product.dto';
+import { filteredQueryProductDto } from './dto/product-query.dto';
 
 @Controller('product')
 export class ProductServiceController {
   constructor(private readonly productServiceService: ProductServiceService) {}
 
    @Get()
-   async getAllProducts() {
-      return this.productServiceService.getAllProducts();
+   async getAllProducts(@Query() query: filteredQueryProductDto) {
+      return this.productServiceService.getAllProducts(query);
    }
 
    @Get(':id')

@@ -14,7 +14,7 @@
     "db:seed": "npm run seed",
     "start": "nest start",
     "start:user": "npm run build:user && node dist/apps/user-service/user-service/src/main.js",
-    "start:product": "nest start product-service",
+    "start:product": "npm run build:product && node dist/apps/product-service/product-service/src/main.js",
     "start:all": "concurrently \"npm run start:user\" \"npm run start:product\"",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
