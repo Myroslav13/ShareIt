@@ -1,23 +1,27 @@
 import { PaginatedQueryDTO } from "apps/common/dto/paginated-query.dto";
 import { Type } from "class-transformer";
-import { IsOptional, IsInt, IsDateString } from "class-validator";
+import { IsOptional, IsInt, IsDateString, IsString } from "class-validator";
 
 export class filteredQueryRentalDto extends PaginatedQueryDTO {
    @IsInt()
    @IsOptional()
    @Type(() => Number)
-   category_id?: number;
+   product_id?: number;
 
    @IsInt()
    @IsOptional()
    @Type(() => Number)
-   owner_id?: number;
+   renter_id?: number;
 
    @IsOptional()
    @IsDateString()
-   available_from?: string;
+   start_date?: string;
 
    @IsOptional()
    @IsDateString()
-   available_to?: string;
+   end_date?: string;
+
+   @IsOptional()
+   @IsString()
+   status?: string;
 }

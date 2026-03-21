@@ -1,39 +1,29 @@
-import { IsDateString, IsInt, IsNotEmpty, IsString, Min } from "class-validator";
+import { IsDateString, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from "class-validator";
 
 export class CreateRentalDTO {
    @IsNotEmpty()
    @IsInt()
    @Min(1)
-   owner_id!: number;
+   product_id!: number;
 
    @IsNotEmpty()
    @IsInt()
    @Min(1)
-   category_id!: number;
-
-   @IsNotEmpty()
-   @IsInt()
-   @Min(1)
-   location_id!: number;
-
-   @IsNotEmpty()
-   @IsString()
-   title!: string;
-   
-   @IsNotEmpty()
-   @IsString()
-   description!: string;
-
-   @IsNotEmpty()
-   @IsInt()
-   @Min(0)
-   price_per_day!: number;
+   renter_id!: number;
 
    @IsNotEmpty()
    @IsDateString()
-   available_from!: string;
+   start_date!: string;
 
    @IsNotEmpty()
    @IsDateString()
-   available_to!: string;
+   end_date!: string;
+
+   @IsOptional()
+   @IsNumber()
+   total_price?: number;
+
+   @IsOptional()
+   @IsString()
+   status?: string;
 }

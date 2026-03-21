@@ -36,6 +36,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/rentals-service/tsconfig.app.json"
       }
+    },
+    "reviews-service": {
+      "type": "application",
+      "root": "apps/reviews-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/reviews-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/reviews-service/tsconfig.app.json"
+      }
     }
   }
 }
