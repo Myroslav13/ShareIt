@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 import { CreateProductDTO } from './dto/create-product.dto';
+import { filteredQueryProductDto } from './dto/product-query.dto';
 
 @Injectable()
 export class ProductServiceService {
@@ -23,8 +24,20 @@ export class ProductServiceService {
       return product;
    }
 
-   async getAllProducts() {
-      return this.prisma.products.findMany();
+   async getAllProducts(query: filteredQueryProductDto) {
+      const page = Number(query.page ?? 1);
+      const pageSize = Number(query.pageSize ?? 20);
+
+      return await this.prisma.products.findMany({
+         where: {
+            ...(query.category_id && { category_id: query.category_id }),
+            ...(query.owner_id && { owner_id: query.owner_id }),
+            ...(query.available_from && { available_from: { gte: query.available_from } }),
+            ...(query.available_to && { available_to: { lte: query.available_to } }),
+         },
+         skip: (page - 1) * pageSize,
+         take: pageSize,
+      });
    }
 
    async getProductById(id: number) {
