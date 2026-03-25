@@ -45,6 +45,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/reviews-service/tsconfig.app.json"
       }
+    },
+    "favorites-service": {
+      "type": "application",
+      "root": "apps/favorites-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/favorites-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/favorites-service/tsconfig.app.json"
+      }
     }
   }
 }
